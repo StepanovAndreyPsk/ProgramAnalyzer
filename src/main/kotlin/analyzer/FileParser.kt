@@ -39,9 +39,9 @@ class FileParser(private val filePath: String) {
             ) as KtFile
     }
 
-    fun parseFunctions(): List<KtFunction> {
-        return ktFile.getFunctions()
-    }
+    fun parseFunctions(): List<KtFunction> = ktFile.getFunctions()
+
+    fun ktFile() = ktFile
 }
 
 fun PsiElement.getFunctions(): List<KtFunction> {

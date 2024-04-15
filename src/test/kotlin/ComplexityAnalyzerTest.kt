@@ -7,7 +7,7 @@ import analyzer.FunctionComplexity
 internal class ComplexityAnalyzerTest {
 
     @Test
-    fun basicTest() {
+    fun `basic test`() {
         val fileParser = FileParser("src/test/resources/basic_example.kt")
         val functions = fileParser.parseFunctions()
         assertEquals( 3, functions.size)
@@ -24,7 +24,7 @@ internal class ComplexityAnalyzerTest {
     }
 
     @Test
-    fun nestedConditionalStatementsTest() {
+    fun `nested conditional statements test`() {
         val fileParser = FileParser("src/test/resources/nested_conditional_statements.kt")
         val functions = fileParser.parseFunctions()
         assertEquals(1, functions.size)
@@ -38,7 +38,7 @@ internal class ComplexityAnalyzerTest {
     }
 
     @Test
-    fun classMethodsTest() {
+    fun `class methods test`() {
         val fileParser = FileParser("src/test/resources/class_methods.kt")
         val functions = fileParser.parseFunctions()
         assertEquals( 5, functions.size)

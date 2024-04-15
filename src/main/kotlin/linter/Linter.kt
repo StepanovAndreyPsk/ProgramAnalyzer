@@ -7,17 +7,17 @@ class Linter(private val ktFile: KtFile, val edit: Boolean = false) {
     private val tracker = Tracker()
     fun run() {
         val visitor = LinterPsiVisitor(tracker)
-        check(ktFile, visitor)
+        traverse(ktFile, visitor)
     }
 
     fun generateReport() {
 
     }
 
-    private fun check(psiElement: PsiElement, visitor: PsiVisitor) {
+    private fun traverse(psiElement: PsiElement, visitor: PsiVisitor) {
         visitor.visit(psiElement)
         for (child in psiElement.children) {
-            visitor.visit(child)
+            traverse(child, visitor)
         }
     }
 
