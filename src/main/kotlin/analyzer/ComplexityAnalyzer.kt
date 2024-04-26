@@ -7,10 +7,11 @@ import org.jetbrains.kotlin.psi.KtIfExpression
 import org.jetbrains.kotlin.psi.KtWhenExpression
 import org.jetbrains.kotlin.psi.KtWhileExpression
 
-class ComplexityAnalyzer(functions: List<KtFunction>) {
+class ComplexityAnalyzer(filePath: String) {
     private val complexity = ArrayList<FunctionComplexity>()
-
     init {
+        val fileParser = FileParser(filePath)
+        val functions = fileParser.parseFunctions()
         functions.forEach {  func ->
             val complexityScore = func.getComplexityScore()
             complexity.add(FunctionComplexity(func.name ?: "<anonymous function>", complexityScore)
@@ -45,7 +46,6 @@ class ComplexityAnalyzer(functions: List<KtFunction>) {
             is KtIfExpression -> true
             is KtWhileExpression -> true
             is KtForExpression -> true
-
             is KtWhenExpression -> true
             else -> false
         }
@@ -66,7 +66,7 @@ data class FunctionComplexity(val functionName: String, val complexityScore: Int
     }
 
     override fun toString(): String {
-        return "$functionName : $complexityScore"
+        return "`$functionName` : $complexityScore"
     }
 }
 

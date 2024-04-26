@@ -1,18 +1,13 @@
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import analyzer.ComplexityAnalyzer
-import analyzer.FileParser
 import analyzer.FunctionComplexity
 
 internal class ComplexityAnalyzerTest {
 
     @Test
     fun `basic test`() {
-        val fileParser = FileParser("src/test/resources/complexity/basic_example.kt")
-        val functions = fileParser.parseFunctions()
-        assertEquals( 3, functions.size)
-
-        val analyzer = ComplexityAnalyzer(functions)
+        val analyzer = ComplexityAnalyzer("src/test/resources/complexity/basic_example.kt")
         val analyzerResult = analyzer.getMostComplexFunctions()
         assertEquals(3, analyzerResult.size)
 
@@ -25,11 +20,7 @@ internal class ComplexityAnalyzerTest {
 
     @Test
     fun `nested conditional statements test`() {
-        val fileParser = FileParser("src/test/resources/complexity/nested_conditional_statements.kt")
-        val functions = fileParser.parseFunctions()
-        assertEquals(1, functions.size)
-
-        val analyzer = ComplexityAnalyzer(functions)
+        val analyzer = ComplexityAnalyzer("src/test/resources/complexity/nested_conditional_statements.kt")
         val analyzerResult = analyzer.getMostComplexFunctions(1)
         assertEquals( 1, analyzerResult.size)
 
@@ -39,11 +30,7 @@ internal class ComplexityAnalyzerTest {
 
     @Test
     fun `class methods test`() {
-        val fileParser = FileParser("src/test/resources/complexity/class_methods.kt")
-        val functions = fileParser.parseFunctions()
-        assertEquals( 5, functions.size)
-
-        val analyzer = ComplexityAnalyzer(functions)
+        val analyzer = ComplexityAnalyzer("src/test/resources/complexity/class_methods.kt")
         val analyzerResult = analyzer.getMostComplexFunctions(4)
         assertEquals(4, analyzerResult.size)
 

@@ -9,9 +9,8 @@ import kotlin.test.assertEquals
 
 internal class LinterTest {
     @Test
-    fun `functions and methods test`() {
-        val parser = FileParser("src/test/resources/linter/FunctionNamingExample.kt")
-        val linter = Linter(parser.ktFile())
+    fun `function naming warnings test`() {
+        val linter = Linter("src/test/resources/linter/FunctionNamingExample.kt")
         linter.runChecks()
         val warnings: List<LinterWarning> = linter.getWarnings()
 
@@ -64,6 +63,9 @@ internal class LinterTest {
                 IsInCamelCase
             )
         )
+
+
+        println(linter.generateReport())
     }
 
     private fun checkWarning(

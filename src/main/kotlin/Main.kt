@@ -1,12 +1,14 @@
-import analyzer.FileParser
-import analyzer.getFunctions
-import analyzer.ComplexityAnalyzer
+import cli.Analyzer
+import cli.CalculateComplexityCommand
+import cli.CheckCodestyleCommand
+import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.core.subcommands
+import com.github.ajalt.mordant.rendering.AnsiLevel
+import com.github.ajalt.mordant.terminal.Terminal
 
-fun main() {
-//    val fileParser = FileParser("/Users/andreystepanov/program-analyzer/example.kt")
-//    val funcList = fileParser.createKtFile().getFunctions()
-//
-//    val complexityAnalyzer = ComplexityAnalyzer(funcList)
-//    val result = complexityAnalyzer.getMostComplexFunctions(3)
-//    result.forEach { println(it) }
+fun main(args: Array<String>) {
+
+        Analyzer().context {
+            terminal = Terminal(ansiLevel = AnsiLevel.TRUECOLOR, interactive = true)
+        }.subcommands(CalculateComplexityCommand(), CheckCodestyleCommand()).main(args)
 }

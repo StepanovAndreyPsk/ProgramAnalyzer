@@ -1,11 +1,18 @@
 package linter
 
+import analyzer.FileParser
 import linter.rules.NamingRule
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
-class Linter(private val ktFile: KtFile, val edit: Boolean = false) {
+class Linter(filePath: String) {
     private val tracker = Tracker()
+    private val ktFile: KtFile
+    init {
+        ktFile = FileParser(filePath).ktFile()
+    }
     fun runChecks() {
         val visitor = LinterPsiVisitor(tracker)
         traverse(ktFile, visitor)
@@ -13,8 +20,16 @@ class Linter(private val ktFile: KtFile, val edit: Boolean = false) {
 
     fun getWarnings(): List<LinterWarning> = tracker.linterWarnings
 
-    fun generateReport() {
-        // TODO
+    fun generateReport(): LinterReport {
+        return LinterReport(
+            tracker.functionCounter,
+            tracker.functionViolationCounter,
+            tracker.variableCounter,
+            tracker.variableViolationCounter,
+            tracker.classCounter,
+            tracker.classViolationCounter,
+            tracker.getViolationPercentage()
+        )
     }
 
     private fun traverse(psiElement: PsiElement, visitor: PsiVisitor) {
@@ -58,15 +73,14 @@ class Linter(private val ktFile: KtFile, val edit: Boolean = false) {
         fun addViolatingClass(violatingClass: KtClassOrObject) = violatingClasses.add(violatingClass)
         fun addViolatingVariable(violatingVariable: KtVariableDeclaration) = violatingVariables.add(violatingVariable)
 
-        fun addWarning(
-            originalName: String,
-            suggestedName: String,
-            warningMessage: String,
-            violatedRules: List<NamingRule>
-        ) =
-            _warnings.add(
-                LinterWarning(originalName, suggestedName, violatedRules, warningMessage)
-            )
+        fun getViolationPercentage(): Double {
+            val overallNames = functionCounter + variableCounter + classCounter
+            val violationsNumber = functionViolationCounter + variableViolationCounter + classViolationCounter
+            val percentage = (violationsNumber.toDouble() / overallNames.toDouble() * 100)
+            val df = DecimalFormat("#.##")
+            df.roundingMode = RoundingMode.HALF_UP
+            return df.format(percentage).toDouble()
+        }
 
         fun addWarning(warning: LinterWarning) = _warnings.add(warning)
     }
@@ -75,9 +89,19 @@ data class LinterWarning(
     val originalName: String,
     val suggestedName: String,
     val violatedRules: List<NamingRule>,
-    val warningMessage: String
+    val warningMessage: String,
     ) {
     override fun toString(): String {
         return warningMessage
     }
 }
+
+data class LinterReport(
+    val overallFunctionNumber: Int,
+    val functionViolationNumber: Int,
+    val overallVariableNumber: Int,
+    val variableViolationNumber: Int,
+    val overallClassNumber: Int,
+    val classViolationNumber: Int,
+    val violationPercentage: Double
+)
