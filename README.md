@@ -2,8 +2,29 @@
 ### Description
 Command line application for analyzing kotlin files. 
 
-### Usage example
+### Demo
 ![](demo.gif)
+
+### Running instructions
+```bash
+gradle wrapper
+./analyzer --help # outputs the list of supported commands
+```
+
+### Example Usage
+Directories `examples/complexity` and `examples/linter` contains sample kotlin files to demonstrate the main features of the application.
+
+To quickly check out the application performance just run:
+```bash
+./analizer "calculate-complexity examples/complexity"   # for complexity analysis or
+./analyser "check-codestyle examples/linter"            # for codestyle analysis
+```
+
+### Running tests
+Tests can be run by the command
+```bash
+./gradlew test
+```
 
 ### Outline
 1. Parse Kotlin or Java files using kotlin compiler parser -> get PSI format as an output (class `FileParser`)
