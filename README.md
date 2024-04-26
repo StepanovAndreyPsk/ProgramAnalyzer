@@ -1,4 +1,4 @@
-## Complexity analyzer for Kotlin and Java 
+## Complexity analyzer for Kotlin  
 ### Description
 Command line application for analyzing kotlin files. 
 
