@@ -1,4 +1,9 @@
 ## Complexity analyzer for Kotlin and Java 
+### Description
+Command line application for analyzing kotlin files. 
+
+### Usage example
+![](demo.gif)
 
 ### Outline
 1. Parse Kotlin or Java files using kotlin compiler parser -> get PSI format as an output (class `FileParser`)
